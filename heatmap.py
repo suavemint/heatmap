@@ -1,6 +1,6 @@
 import sys, csv
 from lxml import etree
-from pykml import parser
+#from pykml import parser
 
 def average(x):
     # Input must be a list
@@ -27,19 +27,15 @@ if __name__ == '__main__':
                   '<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>'+\
                   '<script>\nvar map, pointArray, heatmap;\n'
 
-    #zip_kml = 'C:\\Users\\james\\zipcodes.kml'
     zip_kml = 'zipcodes.kml'
     googl = './/{http://earth.google.com/kml/2.0}'
-    
+
     zips_dict = { x[0]:(x[1], x[2]) for x in get_nielsen_csv() }
     zips = zips_dict.keys()
 
-    # print 'Testing zips before cull:', len(zips)
     for x in zips:
         if not x.isdigit():
             zips.pop(zips.index(x))
-            # sys.exit(1)
-    # print 'Testing zips after cull:', len(zips)
 
     names, coords = [], []
 
@@ -56,30 +52,12 @@ if __name__ == '__main__':
     kml_start_num = len(names)
     coords_dict = {}
 
-    #print 'Length of coords list: %i' % len(coords)
-    #print 'Length of names list: %i' % len(names)
-    #print 15*'='
-    #print '%s ZIPs in CSV file.' % len(zips)
-    #print '%s ZIPs in KML file.' % kml_start_num
-
     for x in zips:
         if x in names:
             # Keep its zip and corresponding coords
             index = names.index(x)
             coord = coords[index]
             coords_dict[x] = coord
-    
-#   print 'Now testing the third way: %i' % len(coords_dict)
-
-    # for name in names:
-    
-#   print 'Number of zips in names after culling: %i' % len(names)
-
-    #names = [x for x in names if x.isdigit()]
-    #names = [x for x in names if x in zips]
-
-    # print 'Surviving number in names:',len(names)
-#   print 'Original number of ZIPS:', len(zips)
 
     js_var_string_devices = html_header + 'var heatMapData = [\n'
     js_var_string_households = html_header + 'var heatMapData = [\n'
@@ -102,14 +80,6 @@ if __name__ == '__main__':
         else:
             continue
 
-        #break
-#   js_var_string_devices += '];\n'
-#   js_var_string_households += '];\n'
-        # sys.exit(1)
-#    print js_var_string_devices[:-2]; sys.exit(1)
-        
-
-#    for l in (js_var_string_devices[:-2]+'\n', js_var_string_households[:-2]+'\n'):
     def finish_string(l):
         l += '];\n'
         # 99.2569978653, 34.1977940798
@@ -120,25 +90,8 @@ if __name__ == '__main__':
 
     js_var_string_devices = finish_string(js_var_string_devices[:-2]+'\n')
     js_var_string_households = finish_string(js_var_string_devices[:-2]+'\n')
-      
+
     with open(html_out_devices,'wb') as f:
         f.write(js_var_string_devices)
     with open(html_out_households,'wb') as f:
         f.write(js_var_string_households)
-    
-
-#   print '%s ZIPs removed: %i difference between KML and # removed.' % (len(names), len(names)-kml_start_num)
-
-
-
-
-    # zips_coords = {int(float(x)):c for x,c in zip(names, coords) if int(float(x)) in zips}
-
-    # print zips_coords
-
-
-
-    # zip_coords_dict = 
-
-    # for line in get_nielsen_csv():
-    #   print line
