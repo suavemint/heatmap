@@ -6,7 +6,20 @@
 <style> html, body, #map-canvas {height: 100%; margin: 0px; padding: 0px}
 #panel {position: absolute; top: 5px; left:50%; margin-left: -180px; z-index: 5;background-color: #fff; padding: 5px; border: 1px solid #999;}</style><script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script><script>
 var map, pointArray, heatmap;
-var heatMapData = [
+var styles = [
+                    {
+                        featureType: "landscape",
+                        stylers: [
+                            {visibility: "off"}
+                        ]
+                        },{
+                        featureType: "poi",
+                        stylers: [
+                            {visibility: "off"}
+                        ]
+                    }
+                ];
+             var heatMapData = [
 {location: new google.maps.LatLng(34.0976305515, -97.4151520368), weight: 87},
 {location: new google.maps.LatLng(39.12152, -80.4645005767), weight: 124},
 {location: new google.maps.LatLng(39.4919796141, -80.2616647762), weight: 107},
@@ -1728,13 +1741,18 @@ var heatMapData = [
 {location: new google.maps.LatLng(37.8260728145, -82.0007309841), weight: 251},
 {location: new google.maps.LatLng(37.7714022941, -81.3055573382), weight: 117}
 ];
-function initialize() { var mapOptions = {zoom:10, center: new google.maps.LatLng(40.374056,-82.195007), mapTypeId: google.maps.MapTypeId.ROADMAP};
-
-map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-heatmap = new google.maps.visualization.HeatmapLayer({data: heatMapData});
-heatmap.setMap(map);
-};
-google.maps.event.addDomListener(window, "load", initialize);
+function initialize() {
+                    var mapOptions = {
+                                        styles: styles,
+                                        zoom: 6,
+                                        center: new google.maps.LatLng(40.374056,-82.195007),
+                                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+                    heatmap = new google.maps.visualization.HeatmapLayer({data: heatMapData});
+                    heatmap.setMap(map);
+            };
+            google.maps.event.addDomListener(window, "load", initialize);
 </script></head>
 <body>
 <div id="map-canvas"></div></body></html>
